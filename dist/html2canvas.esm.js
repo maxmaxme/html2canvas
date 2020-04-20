@@ -6579,18 +6579,20 @@ var CanvasRenderer = /** @class */ (function () {
         this.path(path);
         this.ctx.fillStyle = pattern;
         this.ctx.translate(offsetX, offsetY);
+        this.ctx.scale(1 / this.options.scale, 1 / this.options.scale);
         this.ctx.fill();
-        this.ctx.translate(-offsetX, -offsetY);
+        this.ctx.translate(-offsetX * this.options.scale, -offsetY * this.options.scale);
+        this.ctx.scale(this.options.scale, this.options.scale);
     };
     CanvasRenderer.prototype.resizeImage = function (image, width, height) {
-        if (image.width === width && image.height === height) {
+        if (image.width === width * this.options.scale && image.height === height * this.options.scale) {
             return image;
         }
         var canvas = this.canvas.ownerDocument.createElement('canvas');
-        canvas.width = width;
-        canvas.height = height;
+        canvas.width = width * this.options.scale;
+        canvas.height = height * this.options.scale;
         var ctx = canvas.getContext('2d');
-        ctx.drawImage(image, 0, 0, image.width, image.height, 0, 0, width, height);
+        ctx.drawImage(image, 0, 0, image.width, image.height, 0, 0, width * this.options.scale, height * this.options.scale);
         return canvas;
     };
     CanvasRenderer.prototype.renderBackgroundImage = function (container) {
