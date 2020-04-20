@@ -523,20 +523,32 @@ export class CanvasRenderer {
         this.path(path);
         this.ctx.fillStyle = pattern;
         this.ctx.translate(offsetX, offsetY);
+        this.ctx.scale(1 / this.options.scale, 1 / this.options.scale);
         this.ctx.fill();
-        this.ctx.translate(-offsetX, -offsetY);
+        this.ctx.translate(-offsetX * this.options.scale, -offsetY * this.options.scale);
+        this.ctx.scale(this.options.scale, this.options.scale);
     }
 
     resizeImage(image: HTMLImageElement, width: number, height: number): HTMLCanvasElement | HTMLImageElement {
-        if (image.width === width && image.height === height) {
+        if (image.width === width * this.options.scale && image.height === height * this.options.scale) {
             return image;
         }
 
         const canvas = (this.canvas.ownerDocument as Document).createElement('canvas');
-        canvas.width = width;
-        canvas.height = height;
+        canvas.width = width * this.options.scale;
+        canvas.height = height * this.options.scale;
         const ctx = canvas.getContext('2d') as CanvasRenderingContext2D;
-        ctx.drawImage(image, 0, 0, image.width, image.height, 0, 0, width, height);
+        ctx.drawImage(
+            image,
+            0,
+            0,
+            image.width,
+            image.height,
+            0,
+            0,
+            width * this.options.scale,
+            height * this.options.scale
+        );
         return canvas;
     }
 
