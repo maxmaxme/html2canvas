@@ -62,7 +62,7 @@ var html2canvas = function (element, options) {
     return renderElement(element, options);
 };
 exports.default = html2canvas;
-if (typeof window !== "undefined") {
+if (typeof window !== 'undefined') {
     cache_storage_1.CacheStorage.setContext(window);
 }
 var renderElement = function (element, opts) { return __awaiter(_this, void 0, void 0, function () {
